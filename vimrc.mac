@@ -1,5 +1,8 @@
+execute pathogen#infect()
+filetype plugin on
+
 syntax enable
-set background=light
+set background=dark
 "let g:solarized_termcolors = 256
 "let g:solarized_visibility = "high"
 "let g:solarized_contrast = "high"
@@ -44,6 +47,9 @@ map <leader>d :bd<cr>
 map <leader>x :make<cr>
 map U <C-R>
 map K i<Enter><Esc>
+
+map <leader>> :cnext<cr>
+map <leader>< :cprev<cr>
 
 
 map - 10<c-w><
@@ -116,7 +122,8 @@ nnoremap ? :Ag! "\b<C-R><C-W>\b"<CR>:cw<CR>
 "  :20  :  up to 20 lines of command-line history will be remembered
 "  %    :  saves and restores the buffer list
 "  n... :  where to save the viminfo files
-set viminfo='10,\"100,:20,%,n~/.viminfo
+
+" set viminfo='10,\"100,:20,%,n~/.viminfo
 
 function! ResCur()
     if line("'\"") <= line("$")
@@ -131,3 +138,29 @@ augroup resCur
 augroup END
 
 au BufRead,BufNewFile *.md set filetype=markdown
+
+let g:rbpt_colorpairs = [
+    \ ['brown',       'RoyalBlue3'],
+    \ ['Darkblue',    'SeaGreen3'],
+    \ ['darkgray',    'DarkOrchid3'],
+    \ ['darkgreen',   'firebrick3'],
+    \ ['darkcyan',    'RoyalBlue3'],
+    \ ['darkred',     'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['brown',       'firebrick3'],
+    \ ['gray',        'RoyalBlue3'],
+    \ ['black',       'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['Darkblue',    'firebrick3'],
+    \ ['darkgreen',   'RoyalBlue3'],
+    \ ['darkcyan',    'SeaGreen3'],
+    \ ['darkred',     'DarkOrchid3'],
+    \ ['red',         'firebrick3'],
+    \ ]
+
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
+
+setlocal omnifunc=go#complete#Complete
