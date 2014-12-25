@@ -27,9 +27,10 @@ set tabstop=4 shiftwidth=4 expandtab
 
 
 let mapleader = " "
-inoremap <Nul> <C-n>
-imap <A-Space> <C-x><C-l>
-cnoremap %% <C-R>=expand('%:h').'/'<cr>
+inoremap <Nul> <C-x><C-o>
+"inoremap <Nul> <C-n>
+"imap <A-Space> <C-x><C-l>
+"cnoremap %% <C-R>=expand('%:h').'/'<cr>
 
 map <leader>e :edit<space>
 map <leader>v :view<space>
