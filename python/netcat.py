@@ -26,7 +26,6 @@ def option_error(option, value):
     sys.exit(-1);
 
 def setOption(all_options, option_to_set, value):
-    print("Setting option %s to %s" % (option_to_set, value))
     all_options[option_to_set] = value
 
 def main():
@@ -53,24 +52,24 @@ def main():
 
 
     actions = {
-        '-h': lambda a: usage(),
-        '--help': lambda a: usage(),
-        '-l': lambda a: setOption(options, 'listen', True),
-        '--listen': lambda a: setOption(options, 'listen', True),
-        '-e': lambda a: setOption(options, 'execute', a),
-        '--execute': lambda a: setOption(options, 'execute', a),
-        '-c': lambda a: setOption(options, 'command', True),
-        '--commandshell': lambda a: setOption(options, 'command', True),
-        '-u': lambda a: setOption(options, 'upload_destination', a),
-        '--upload': lambda a: setOption(options, 'upload_destination', a),
-        '-t': lambda a: setOption(options, 'target', a),
-        '--target': lambda a: setOption(options, 'target', a),
-        '-p': lambda a: setOption(options, 'port', int(a)),
-        '--port': lambda a: setOption(options, 'port', int(a)),
+        '-h': lambda unused: usage(),
+        '--help': lambda unused: usage(),
+        '-l': lambda unused: setOption(options, 'listen', True),
+        '--listen': lambda unused: setOption(options, 'listen', True),
+        '-e': lambda argument: setOption(options, 'execute', argument),
+        '--execute': lambda argument: setOption(options, 'execute', argument),
+        '-c': lambda unused: setOption(options, 'command', True),
+        '--commandshell': lambda unused: setOption(options, 'command', True),
+        '-u': lambda argument: setOption(options, 'upload_destination', argument),
+        '--upload': lambda argument: setOption(options, 'upload_destination', argument),
+        '-t': lambda argument: setOption(options, 'target', argument),
+        '--target': lambda argument: setOption(options, 'target', argument),
+        '-p': lambda argument: setOption(options, 'port', int(argument)),
+        '--port': lambda argument: setOption(options, 'port', int(argument)),
     }
 
+    for option, argument in opts:
+        actions.get(option, lambda argument: option_error(option, argument))(argument)
 
-    for o, a in opts:
-        actions.get(o, lambda x: option_error(o, x))(a)
 
 main()
