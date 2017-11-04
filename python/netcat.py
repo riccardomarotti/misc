@@ -25,8 +25,6 @@ def option_error(option, value):
     print("Unhandled option '%s'" % option)
     sys.exit(-1);
 
-def setOption(all_options, option_to_set, value):
-    all_options[option_to_set] = value
 
 def main():
     options = {
@@ -52,16 +50,17 @@ def main():
 
     actions = {}
     actions.update(dict.fromkeys(['-h', '--help'], lambda unused: usage()))
-    actions.update(dict.fromkeys(['-l', '--listen'], lambda unused: setOption(options, 'listen', True)))
-    actions.update(dict.fromkeys(['-e', '--execute'], lambda argument: setOption(options, 'execute', argument)))
-    actions.update(dict.fromkeys(['-c', '--commandshell'], lambda unused: setOption(options, 'command', True)))
-    actions.update(dict.fromkeys(['-u', '--upload'], lambda argument: setOption(options, 'upload_destination', argument)))
-    actions.update(dict.fromkeys(['-t', '--target'], lambda argument: setOption(options, 'target', argument)))
-    actions.update(dict.fromkeys(['-p', '--port'], lambda argument: setOption(options, 'port', int(argument))))
+    actions.update(dict.fromkeys(['-l', '--listen'], lambda unused: options.update({'listen': True})))
+    actions.update(dict.fromkeys(['-e', '--execute'], lambda argument: options.update({'execute': argument})))
+    actions.update(dict.fromkeys(['-c', '--commandshell'], lambda unused: options.update({'command': True})))
+    actions.update(dict.fromkeys(['-u', '--upload'], lambda argument: options.update({'upload_destination': argument})))
+    actions.update(dict.fromkeys(['-t', '--target'], lambda argument: options.update({'target': argument})))
+    actions.update(dict.fromkeys(['-p', '--port'], lambda argument: options.update({'port': int(argument)})))
 
 
     for option, argument in opts:
         actions.get(option, lambda argument: option_error(option, argument))(argument)
 
+    print(options)
 
 main()
