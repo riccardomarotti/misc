@@ -50,23 +50,15 @@ def main():
         print(str(err))
         usage()
 
+    actions = {}
+    actions.update(dict.fromkeys(['-h', '--help'], lambda unused: usage()))
+    actions.update(dict.fromkeys(['-l', '--listen'], lambda unused: setOption(options, 'listen', True)))
+    actions.update(dict.fromkeys(['-e', '--execute'], lambda argument: setOption(options, 'execute', argument)))
+    actions.update(dict.fromkeys(['-c', '--commandshell'], lambda unused: setOption(options, 'command', True)))
+    actions.update(dict.fromkeys(['-u', '--upload'], lambda argument: setOption(options, 'upload_destination', argument)))
+    actions.update(dict.fromkeys(['-t', '--target'], lambda argument: setOption(options, 'target', argument)))
+    actions.update(dict.fromkeys(['-p', '--port'], lambda argument: setOption(options, 'port', int(argument))))
 
-    actions = {
-        '-h': lambda unused: usage(),
-        '--help': lambda unused: usage(),
-        '-l': lambda unused: setOption(options, 'listen', True),
-        '--listen': lambda unused: setOption(options, 'listen', True),
-        '-e': lambda argument: setOption(options, 'execute', argument),
-        '--execute': lambda argument: setOption(options, 'execute', argument),
-        '-c': lambda unused: setOption(options, 'command', True),
-        '--commandshell': lambda unused: setOption(options, 'command', True),
-        '-u': lambda argument: setOption(options, 'upload_destination', argument),
-        '--upload': lambda argument: setOption(options, 'upload_destination', argument),
-        '-t': lambda argument: setOption(options, 'target', argument),
-        '--target': lambda argument: setOption(options, 'target', argument),
-        '-p': lambda argument: setOption(options, 'port', int(argument)),
-        '--port': lambda argument: setOption(options, 'port', int(argument)),
-    }
 
     for option, argument in opts:
         actions.get(option, lambda argument: option_error(option, argument))(argument)
