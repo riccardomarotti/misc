@@ -10,4 +10,3 @@ print(request_string)
 client.send(request_string.encode())
 
 print(client.recv(4096).decode())
-
