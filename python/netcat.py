@@ -4,6 +4,95 @@ import getopt
 import threading
 import subprocess
 
+
+def client_sender(options):
+    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    try:
+        client.connect((options['target'], options['port']))
+
+        buffer = sys.stdin.read()
+
+        while True:
+            if len(buffer):
+                client.send(buffer.encode())
+
+            recv_len = 4096
+            response = ""
+
+            while recv_len >= 4096:
+                data = client.recv(4096)
+                recv_len = len(data)
+                response += data.decode()
+
+            print(response),
+            buffer = raw_input()
+    except:
+        print(sys.exc_info())
+        print("[*] Exiting.")
+        client.close()
+
+
+def run_command(command):
+    command = command.rstrip()
+
+    try:
+        output = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True)
+    except:
+        output = "Failed to execute command.\r\n"
+
+    return output
+
+
+def client_handler(client_socket, options):
+    upload_destination = options['upload_destination']
+    if len(upload_destination):
+        file_buffer = ""
+
+        for data in iter(client_socket.recv(4096)):
+            file_buffer += data
+
+        try:
+            file_descriptor = open(upload_destination, "wb")
+            file_descriptor.write(file_buffer)
+            file_descriptor.close()
+            client_socket.send("Successfully saved file to %s\r\n" % upload_destination)
+        except:
+            client_socket.send("Failed to save file to %s\r\n" % upload_destination)
+
+    if len(options['execute']):
+        output = run_command(options['execute'])
+        client_socket.send(output)
+
+    if options['command']:
+        while True:
+            client_socket.send(">".encode())
+
+            cmd_buffer = ""
+            for data in iter(client_socket.recv(1024)):
+                cmd_buffer += data.encode()
+
+            response = run_command(cmd_buffer)
+            client_socket.send(response)
+
+
+
+
+def server_loop(options):
+    if not len(options['target']):
+        options['target'] = "0.0.0.0"
+
+    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server.bind((options['target'], options['port']))
+    server.listen(5)
+
+    while True:
+        client_socket, addr = server.accept()
+        print("Accepted connection from %s" % str(addr))
+        client_thread = threading.Thread(target=client_handler, args=(client_socket, options))
+        client_thread.start()
+
+
+
 def usage():
     print("Net Tool")
     print()
@@ -61,6 +150,11 @@ def main():
     for option, argument in opts:
         actions.get(option, lambda argument: option_error(option, argument))(argument)
 
-    print(options)
+    if not options['listen'] and len(options['target']) and options['port'] > 0:
+        client_sender(options)
+
+    if options['listen']:
+        server_loop(options)
+
 
 main()
