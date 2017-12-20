@@ -20,7 +20,7 @@ conky.config = {
   draw_borders = false,
   use_xft = true,
   font = 'DejaVu Sans Mono:size=12',
-  xftalpha = 0.8,
+  xftalpha = 0.7,
   default_color = '#FFFFFF',
   minimum_width = 405,
   maximum_width = 405,
@@ -35,10 +35,14 @@ conky.text = [[
   ${goto 20}2: ${cpubar 10,120 cpu2}${goto 180}${cpu cpu2}%${goto 240}6: ${cpubar 10,120 cpu6}${goto 400}${cpu cpu6}%
   ${goto 20}3: ${cpubar 10,120 cpu3}${goto 180}${cpu cpu3}%${goto 240}7: ${cpubar 10,120 cpu7}${goto 400}${cpu cpu7}%
 
-  ${color}${goto 265}Core 0: ${if_match ${exec sensors coretemp-isa-0000 | grep "Core 0" | cut -c 17-18} > 70}${color red}${else}${color green}${endif}${exec sensors coretemp-isa-0000 | grep "Core 0" | cut -c 17-18}°C
-  ${color}${goto 75}SYS: ${if_match ${exec sensors it8728-isa-0a30 | grep temp1 | cut -c 16-17} > 40}${color red}${else}${color green}${endif}${exec sensors it8728-isa-0a30 | grep temp1 | cut -c 16-17}°C ${color}${goto 265}Core 1: ${if_match ${exec sensors coretemp-isa-0000 | grep "Core 1" | cut -c 17-18} > 70}${color red}${else}${color green}${endif}${exec sensors coretemp-isa-0000 | grep "Core 1" | cut -c 17-18}°C
-  ${color}${goto 75}PCH: ${if_match ${exec sensors it8728-isa-0a30 | grep temp2 | cut -c 16-17} > 50}${color red}${else}${color green}${endif}${exec sensors it8728-isa-0a30 | grep temp2 | cut -c 16-17}°C ${color}${goto 265}Core 2: ${if_match ${exec sensors coretemp-isa-0000 | grep "Core 2" | cut -c 17-18} > 70}${color red}${else}${color green}${endif}${exec sensors coretemp-isa-0000 | grep "Core 2" | cut -c 17-18}°C
-  ${color}${goto 265}Core 3: ${if_match ${exec sensors coretemp-isa-0000 | grep "Core 3" | cut -c 17-18} > 70}${color red}${else}${color green}${endif}${exec sensors coretemp-isa-0000 | grep "Core 3" | cut -c 17-18}°C
+  ${color}${goto 75}SYS: ${if_match ${exec sensors it8728-isa-0a30 | grep temp1 | cut -c 16-17} > 40}${color red}${else}${color green}${endif}${exec sensors it8728-isa-0a30 | grep temp1 | cut -c 16-17}°C ${color}${goto 265}Core 0: ${if_match ${exec sensors coretemp-isa-0000 | grep "Core 0" | cut -c 17-18} > 70}${color red}${else}${color green}${endif}${exec sensors coretemp-isa-0000 | grep "Core 0" | cut -c 17-18}°C
+  ${color}${goto 75}PCH: ${if_match ${exec sensors it8728-isa-0a30 | grep temp2 | cut -c 16-17} > 50}${color red}${else}${color green}${endif}${exec sensors it8728-isa-0a30 | grep temp2 | cut -c 16-17}°C${color}${goto 265}Core 1: ${if_match ${exec sensors coretemp-isa-0000 | grep "Core 1" | cut -c 17-18} > 70}${color red}${else}${color green}${endif}${exec sensors coretemp-isa-0000 | grep "Core 1" | cut -c 17-18}°C
+  ${color}${goto 75}GPU: ${if_match ${exec nvidia-settings -q gpucoretemp -t |
+  head -n 1} > 50}${color red}${else}${color green}${endif}${exec exec nvidia-settings -q gpucoretemp -t |
+  head -n 1}°C${color}${goto 265}Core 2: ${if_match ${exec sensors coretemp-isa-0000 | grep "Core 2" | cut -c 17-18} > 70}${color red}${else}${color green}${endif}${exec sensors coretemp-isa-0000 | grep "Core 2" | cut -c 17-18}°C
+  ${color}${goto 75}GPU: ${if_match ${exec nvidia-settings -q gpucoretemp -t |
+  tail -n 1} > 50}${color red}${else}${color green}${endif}${exec exec nvidia-settings -q gpucoretemp -t |
+  tail -n 1}°C${color}${goto 265}Core 3: ${if_match ${exec sensors coretemp-isa-0000 | grep "Core 3" | cut -c 17-18} > 70}${color red}${else}${color green}${endif}${exec sensors coretemp-isa-0000 | grep "Core 3" | cut -c 17-18}°C
 
 
 ]];
