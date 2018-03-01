@@ -46,11 +46,19 @@ template = '''
 </html>
 '''
 
-if len(sys.argv) != 2:
-    print("Pass me the path containing your images.")
-    exit(0)
+if len(sys.argv) == 2:
+    output_directory = sys.argv[1];
+elif len(sys.argv) == 1:
+    output_directory = sys.stdin.readlines()[0].strip()
+else:
+    print("Pass me the path containing your images, or pipe me that through stdin.")
+    exit(1)
 
-output_directory = sys.argv[1];
+if not os.path.isdir(output_directory):
+    print("{} does not seem to be a directory.".format(output_directory))
+    exit(2)
+
+
 output_file_name = os.path.join(output_directory, "./index.html")
 
 if os.path.isfile(output_file_name):
@@ -65,3 +73,5 @@ output = template.replace("{{{PAGES_ARRAY}}}", javascript_pages_array)
 with open(output_file_name, 'w') as output_file:
     output_file.write(output)
 
+
+print("File {} was correctly created.".format(output_file_name))
