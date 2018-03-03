@@ -25,7 +25,11 @@ template = '''
 
             image.src = page_file_name;
             image.onload = function() {
-                set_links(image, previous_index, next_index);
+                var is_touch_device = 'ontouchstart' in window;
+                if(!(is_touch_device)){
+                    set_links(image, previous_index, next_index);
+                }
+
                 set_swipe_events(image, previous_index, next_index)
             }
         }
