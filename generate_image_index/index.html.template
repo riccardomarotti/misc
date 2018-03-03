@@ -28,17 +28,27 @@
 
             document.addEventListener('touchstart',
                 function(event) {
+                    if(event.touches.length > 1) {
+                        startX = null
+                        return;
+                    }
+
                     startX = event.touches[0].clientX;
                 }, false);
 
             document.addEventListener('touchmove',
                 function(event){
-                    currentX = event.touches[0].clientX
+                    if(event.touches.length > 1 || startX === null) {
+                        return;
+                    }
 
-                    if(startX - currentX > 10) {
+                    var currentX = event.touches[0].clientX;
+                    var treshold = 10;
+
+                    if(startX - currentX > treshold) {
                         window.location.href = `?=${next_index}`
                     }
-                    if(startX - currentX < -10) {
+                    if(startX - currentX < -treshold) {
                         window.location.href = `?=${previous_index}`
                     }
                 }, false);
