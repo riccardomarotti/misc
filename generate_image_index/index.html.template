@@ -29,32 +29,45 @@
 
         function set_swipe_events(image, previous_index, next_index) {
             var startX = null;
+            var startY = null;
 
             document.addEventListener('touchstart',
                 function(event) {
                     if(event.touches.length > 1) {
-                        startX = null
+                        startX = null;
+                        starrY = null;
                         return;
                     }
 
                     startX = event.touches[0].clientX;
+                    startY = event.touches[0].clientY;
                 }, false);
 
             document.addEventListener('touchmove',
                 function(event){
-                    if(event.touches.length > 1 || startX === null) {
+                    if(event.touches.length > 1 || startX === null || startY === null) {
                         return;
                     }
 
                     var currentX = event.touches[0].clientX;
+                    var currentY = event.touches[0].clientY;
                     var treshold = 10;
 
-                    if(startX - currentX > treshold) {
-                        window.location.href = `?=${next_index}`
+                    var deltaX = startX - currentX;
+                    var deltaY = startY - currentY;
+
+                    var isHorizontalSwipe = Math.abs(deltaX) > Math.abs(deltaY)
+
+                    if(isHorizontalSwipe) {
+                        if(deltaX > treshold) {
+                            window.location.href = `?=${next_index}`
+                        }
+                        if(deltaX < -treshold) {
+                            window.location.href = `?=${previous_index}`
+                        }
                     }
-                    if(startX - currentX < -treshold) {
-                        window.location.href = `?=${previous_index}`
-                    }
+
+
                 }, false);
         }
 
