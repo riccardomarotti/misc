@@ -52,7 +52,8 @@ template = '''
 
             document.addEventListener('touchmove',
                 function(event){
-                    if(event.touches.length > 1 || startX === null || startY === null) {
+                    var image_zoomed = event.view.visualViewport.scale > 1;
+                    if(event.touches.length > 1 || startX === null || startY === null || image_zoomed) {
                         return;
                     }
 
