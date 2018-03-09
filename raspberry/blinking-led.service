@@ -1,0 +1,9 @@
+[Unit]
+Description=Blink led when pi is on
+
+[Service]
+ExecStart=/home/alarm/blink-led.py
+
+[Install]
+WantedBy=multi-user.target
+

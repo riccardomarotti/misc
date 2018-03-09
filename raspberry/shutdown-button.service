@@ -1,0 +1,9 @@
+[Unit]
+Description=Shutdown when button is pressed
+
+[Service]
+ExecStart=/home/alarm/on-shutdown.py
+
+[Install]
+WantedBy=multi-user.target
+
